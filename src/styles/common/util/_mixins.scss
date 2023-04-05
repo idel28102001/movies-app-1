@@ -1,0 +1,24 @@
+@use "functions" as u;
+@use "breakpoints" as b;
+
+@mixin logosImg($height, $width) {
+  background-image: url("../images/sprite.png");
+  background-size: u.rem(800);
+  height: u.rem($height);
+  width: u.rem($width);
+}
+
+@mixin tableHeading($title) {
+  content: $title;
+  display: block;
+  color: var(--color-gray-1);
+  font-size: u.rem(14);
+  font-weight: 500;
+  margin-bottom: u.rem(6);
+}
+
+@mixin transition($timing, $duration, $properties...) {
+  transition-property: $properties;
+  transition-duration: $duration;
+  transition-timing-function: $timing;
+}
