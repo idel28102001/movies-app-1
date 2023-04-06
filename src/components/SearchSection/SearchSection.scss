@@ -1,0 +1,8 @@
+@use '../../styles/common/util' as u;
+
+.search-section {
+  margin-bottom: u.em(32);
+  @include u.breakpoint(medium) {
+    margin-bottom: u.em(10);
+  }
+}

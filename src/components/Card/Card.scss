@@ -2,7 +2,7 @@
 
 .card {
   display: grid;
-  width: 454px;
+  width: 100%;
   background: white;
   column-gap: 20px;
   padding: 20px 20px 15px 0;
@@ -13,8 +13,7 @@
   'image info'
   'image descr';
 
-  @include u.breakpoint(large) {
-    width: 387px;
+  @include u.breakpoint(medium) {
     gap: 10px 13px;
     padding: 6px 10px 20px 10px;
     grid-template:
@@ -29,14 +28,14 @@
     display: flex;
     grid-area: image;
 
-    @include u.breakpoint(large) {
+    @include u.breakpoint(medium) {
       max-height: 91px;
       margin: 0;
     }
 
     &--img {
       object-fit: contain;
-      @include u.breakpoint(large) {
+      @include u.breakpoint(medium) {
         height: 100%;
       }
     }
@@ -52,14 +51,14 @@
     justify-content: space-around;
     grid-area: descr;
 
-    @include u.breakpoint(large) {
+    @include u.breakpoint(medium) {
       gap: 10px;
     }
 
     &--rate {
       margin-right: -9px;
 
-      @include u.breakpoint(large) {
+      @include u.breakpoint(medium) {
         display: flex;
         justify-content: flex-end;
         margin: 0;
