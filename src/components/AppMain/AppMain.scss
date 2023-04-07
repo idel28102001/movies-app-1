@@ -33,11 +33,13 @@ body {
 }
 
 .app {
-  padding-block: u.em(19) u.em(216);
+  padding-block: u.em(19) u.em(21);
   min-height: 100vh;
   background: #FFF;
 }
 
+@include u.make-container(default);
+@include u.make-container(xxlarge);
 @include u.make-container(xlarge);
 @include u.make-container(large);
 @include u.make-container(medium);

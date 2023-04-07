@@ -6,7 +6,7 @@ import RatePart from '../RatePart';
 export interface CardDescrInterface {
   description: string;
   rate: number;
-  score: string;
+  score: number;
 }
 
 interface CardDescrProps {
@@ -16,10 +16,10 @@ interface CardDescrProps {
 export default class CardDescr extends Component<CardDescrProps, unknown> {
   render() {
     return (
-      <div className="card__descr">
-        <p className="card__descr--text">{this.props.item.description}</p>
+      <div className="card__card-descr card-descr">
+        <p className="card-descr__text">{this.props.item.description}</p>
         <RatePart rate={this.props.item.rate} />
-        <div className="card__score">{this.props.item.score}</div>
+        <div className="card-descr__score">{this.props.item.score}</div>
       </div>
     );
   }

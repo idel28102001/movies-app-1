@@ -1,1 +1,24 @@
 @use '../../styles/common/util' as u;
+
+.card__image--img {
+}
+
+
+.card-image {
+  margin: -20px 0 -15px 0;
+  position: relative;
+  display: flex;
+
+  @include u.breakpoint(medium) {
+    max-height: 100%;
+    margin: 0;
+  }
+
+  &--img {
+    width: 100%;
+    object-fit: cover;
+    @include u.breakpoint(medium) {
+      height: 100%;
+    }
+  }
+}

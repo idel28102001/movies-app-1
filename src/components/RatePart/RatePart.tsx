@@ -9,7 +9,7 @@ interface RatePartProps {
 export default class RatePart extends Component<RatePartProps, unknown> {
   render() {
     return (
-      <div className="card__descr--rate">
+      <div className="card__descr--rate rate">
         <Rate allowHalf defaultValue={this.props.rate} count={10} />
       </div>
     );

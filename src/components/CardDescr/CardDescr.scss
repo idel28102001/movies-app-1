@@ -1,1 +1,45 @@
 @use '../../styles/common/util' as u;
+
+
+.card-descr {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  @include u.breakpoint(medium) {
+    gap: u.em(10);
+  }
+
+  &__text {
+    max-height: u.em(110);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: u.em(12);
+    line-height: u.em(22);
+    margin: 0;
+    @include u.breakpoint(medium) {
+      padding-right: u.em(20);
+    }
+  }
+
+  &__score {
+    font-size: u.em(12);
+    font-weight: 500;
+    position: absolute;
+    right: u.em(14);
+    top: u.em(16);
+
+    &:before {
+      border-radius: 50%;
+      border: u.em(2) solid #E9D100;
+      content: '';
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: u.em(40);
+      width: u.em(40);
+      position: absolute;
+    }
+  }
+}
+

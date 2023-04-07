@@ -1,1 +1,17 @@
 @use '../../styles/common/util' as u;
+
+.rate {
+
+  margin-right: -1px;
+
+  @include u.breakpoint(medium) {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0;
+  }
+
+}
+
+.ant-rate {
+  font-size: 14px;
+}

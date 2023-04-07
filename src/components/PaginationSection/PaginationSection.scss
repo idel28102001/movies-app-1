@@ -1,0 +1,33 @@
+@use '../../styles/common/util' as u;
+
+.pagination-section {
+  display: flex;
+  justify-content: center;
+}
+
+:where(.css-dev-only-do-not-override-1vtf12y) {
+  &.ant-pagination .ant-pagination-item {
+    & a {
+
+      color: rgba(0, 0, 0, .65);
+    }
+
+    &-active {
+      background-color: #1677ff;
+
+      & a {
+        color: #fff;
+      }
+    }
+  }
+
+  &.ant-select-single .ant-select-selector {
+    color: rgba(0, 0, 0, .65);
+  }
+
+  &.ant-select-dropdown .ant-select-item {
+    color: rgba(0, 0, 0, .65);
+  }
+}
+
+

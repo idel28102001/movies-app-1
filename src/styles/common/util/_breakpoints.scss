@@ -4,16 +4,18 @@ $breakpoints-down: (
         "small": f.em(400),
         "xsmall": f.em(576),
         "medium": f.em(768),
-        "large": f.em(1200),
-        "xlarge": f.em(1600),
+        "large": f.em(992),
+        "xlarge": f.em(1200),
+        "xxlarge": f.em(1600),
 );
 
 $breakpoints-container-down: (
         "small": f.em(387),
         "xsmall": f.em(387),
         "medium": f.em(600),
-        "large": f.em(1010),
+        "large": f.em(700),
         "xlarge": f.em(1010),
+        "xxlarge": f.em(1010),
 );
 
 @mixin breakpoint($size) {
@@ -22,21 +24,26 @@ $breakpoints-container-down: (
   }
 }
 
-
 .container {
   width: 100%;
   margin: auto;
 }
 
 @mixin make-container($size) {
-  @media (max-width: map-get($breakpoints-down, $size)) {
+  @if $size==default {
     .container {
-      @if $size=='xsmall' or $size=='small' {
-        padding-inline: f.em(12);
-      } @else {
-        padding-inline: f.em(36);
+      padding-inline: f.em(36);
+      max-width: f.em(1010);
+    }
+
+  } @else {
+    @media (max-width: map-get($breakpoints-down, $size)) {
+      .container {
+        max-width: map-get($breakpoints-container-down, $size);
+        @if $size=='xsmall' or $size=='small' {
+          padding-inline: f.em(12);
+        }
       }
-      max-width: map-get($breakpoints-container-down, $size);
     }
   }
 

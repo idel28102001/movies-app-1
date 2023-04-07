@@ -3,7 +3,8 @@ import { Component } from 'react';
 import { Space, Tag } from 'antd';
 
 export interface GenreInterface {
-  label: string;
+  id: number;
+  name: string;
 }
 
 interface GenresProps {
@@ -13,9 +14,9 @@ interface GenresProps {
 export default class Genres extends Component<GenresProps, unknown> {
   render() {
     return (
-      <Space size={[0, 8]}>
-        {this.props.genres.map((e, index) => (
-          <Tag key={index}>{e.label}</Tag>
+      <Space size={[0, 4]} style={{ flexWrap: 'wrap' }}>
+        {this.props.genres.map((e) => (
+          <Tag key={e.id}>{e.name}</Tag>
         ))}
       </Space>
     );

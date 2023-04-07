@@ -1,1 +1,30 @@
 @use '../../styles/common/util' as u;
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+
+  &__heading {
+    max-width: 80%;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__release-date {
+    font-size: 12px;
+    color: #827E7E;
+  }
+
+  &__list {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+  }
+}

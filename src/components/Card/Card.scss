@@ -4,121 +4,39 @@
   display: grid;
   width: 100%;
   background: white;
-  column-gap: 20px;
-  padding: 20px 20px 15px 0;
+  gap: u.em(10) u.em(20);
+  padding: u.em(20) u.em(20) u.em(15) 0;
   position: relative;
-  filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.15));
+  filter: drop-shadow(u.em(0) u.em(4) u.em(12) rgba(0, 0, 0, 0.15));
+  min-height: u.em(285);
 
   grid-template:
   'image info'
   'image descr';
+  grid-template-columns: 40% 60%;
+  grid-template-rows: max-content 1fr;
 
   @include u.breakpoint(medium) {
-    gap: 10px 13px;
-    padding: 6px 10px 20px 10px;
+    min-height: unset;
+    gap: u.em(10) 3.25%;
+    padding: u.em(6) u.em(10) u.em(20) u.em(10);
     grid-template:
     'image info'
     'descr descr';
-    grid-template-columns: 60px 1fr;
-  }
-
-  &__image {
-    margin: -20px 0 -15px 0;
-    position: relative;
-    display: flex;
-    grid-area: image;
-
-    @include u.breakpoint(medium) {
-      max-height: 91px;
-      margin: 0;
-    }
-
-    &--img {
-      object-fit: contain;
-      @include u.breakpoint(medium) {
-        height: 100%;
-      }
-    }
+    grid-template-rows: max-content 1fr;
+    grid-template-columns: 17.40% 79.35%;
   }
 
   &__info {
     grid-area: info;
   }
 
-  &__descr {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+  &__card-descr {
     grid-area: descr;
-
-    @include u.breakpoint(medium) {
-      gap: 10px;
-    }
-
-    &--rate {
-      margin-right: -9px;
-
-      @include u.breakpoint(medium) {
-        display: flex;
-        justify-content: flex-end;
-        margin: 0;
-      }
-    }
-
-    &--text {
-      font-size: 12px;
-      line-height: 22px;
-      margin: 0;
-    }
   }
 
-  &__score {
-    font-size: 12px;
-    font-weight: 500;
-    position: absolute;
-    right: 12px;
-    top: 14px;
-
-    &:before {
-      border-radius: 50%;
-      border: 2px solid #E9D100;
-      content: '';
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      height: 30px;
-      width: 30px;
-      position: absolute;
-    }
+  &__card-image {
+    grid-area: image;
   }
-}
-
-.info {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-
-  &__heading {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 500;
-  }
-
-  &__release-date {
-    font-size: 12px;
-    color: #827E7E;
-  }
-
-  &__list {
-    display: flex;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    font-size: 12px;
-  }
-}
-
-.ant-rate {
-  font-size: 16px;
 }
 
