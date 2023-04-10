@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+import { FormatDataInterface } from '../components/Card/Card';
+import FormatData from '../common/formatData';
+
 interface BaseMovieInterface {
   id: number;
   title: string;
@@ -36,9 +39,9 @@ interface GetGenresApi {
   genres: Array<GenreInterface>;
 }
 
-interface GetMoviesModification {
+export interface GetMoviesModification {
   page: number;
-  results: Array<MovieInterface>;
+  results: Array<FormatDataInterface>;
   total_pages: number;
   total_results: number;
 }
@@ -55,9 +58,11 @@ export class MovieService {
     return `${MovieService.baseUrl}/genre/movie/list`;
   }
 
-  static getMoviesRequest(query: string) {
+  static getMoviesRequest(query: string, controller?: AbortController) {
+    const signal = controller ? controller.signal : undefined;
     return axios
       .get<GetMoviesApi>(MovieService.moviesURL, {
+        signal,
         params: {
           api_key: MovieService.apiKey,
           query,
@@ -66,18 +71,23 @@ export class MovieService {
       .then((e) => e.data);
   }
 
-  static getGenresRequest() {
+  static getGenresRequest(controller?: AbortController) {
+    const signal = controller ? controller.signal : undefined;
     return axios
-      .get<GetGenresApi>(MovieService.genresURL, { params: { api_key: MovieService.apiKey } })
+      .get<GetGenresApi>(MovieService.genresURL, { signal, params: { api_key: MovieService.apiKey } })
       .then((e) => e.data);
   }
 
-  static async getMovies(query: string): Promise<GetMoviesModification> {
-    const [movies, genres] = await Promise.all([MovieService.getMoviesRequest(query), MovieService.getGenresRequest()]);
-    const results = movies.results.map((result) => ({
+  static async getMovies(query: string, controller?: AbortController): Promise<GetMoviesModification> {
+    const [movies, genres] = await Promise.all([
+      MovieService.getMoviesRequest(query, controller),
+      MovieService.getGenresRequest(controller),
+    ]);
+    const modificationResults = movies.results.map((result) => ({
       ...result,
       genres: genres.genres.filter((e) => result.genre_ids.includes(e.id)),
     }));
+    const results = modificationResults.map(FormatData.formatData);
     return { ...movies, results };
   }
 }

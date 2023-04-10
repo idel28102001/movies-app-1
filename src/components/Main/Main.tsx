@@ -1,39 +1,59 @@
 import './Main.scss';
-import { Component } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { CanceledError } from 'axios';
 
 import SearchSection from '../SearchSection';
-import CardSection from '../CardSection';
-import { MovieInterface, MovieService } from '../../services/movieService';
-import PaginationSection from '../PaginationSection';
-import { PaginationSectionInterface } from '../PaginationSection/PaginationSection';
+import CardsBlock from '../CardsBlock';
+import { GetMoviesModification, MovieService } from '../../services/movieService';
+import { useFetching } from '../../hooks/useFetching';
+import loadingWrapper from '../../wrappers/loadingWrapper';
+import CardsSection from '../CardsSection';
 
 interface MainState {
-  items: Array<MovieInterface>;
-  paginationInfo: PaginationSectionInterface | null;
+  moviesInfo: GetMoviesModification | null;
 }
 
-export default class Main extends Component<unknown, MainState> {
-  state: MainState = {
-    items: [],
-    paginationInfo: null,
-  };
+const Main = () => {
+  const [moviesInfo, setMoviesInfo] = useState<MainState['moviesInfo']>(null);
+  const [query, setQuery] = useState('return');
 
-  componentDidMount() {
-    MovieService.getMovies('return').then((e) =>
-      this.setState({
-        items: e.results,
-        paginationInfo: { total: e.total_results, perPage: e.results.length },
+  const setNewQuery = useCallback((query: string) => {
+    setQuery(query);
+  }, []);
+
+  const { fetching, isLoading, error } = useFetching((query: string, controller: AbortController) =>
+    MovieService.getMovies(query, controller)
+      .then((e) => setMoviesInfo(e))
+      .catch((e) => {
+        const isInstanceOfAbort = e instanceof CanceledError;
+        if (!isInstanceOfAbort) throw e;
       })
-    );
-  }
+  );
+  const content = loadingWrapper<[GetMoviesModification | null, string]>(
+    (moviesInfo, query) => {
+      return moviesInfo && <CardsBlock moviesInfo={moviesInfo} query={query} />;
+    },
+    isLoading,
+    error,
+    moviesInfo,
+    query
+  );
 
-  render() {
-    return (
-      <main>
-        <SearchSection />
-        <CardSection items={this.state.items} />
-        {this.state.paginationInfo && <PaginationSection info={this.state.paginationInfo} />}
-      </main>
-    );
-  }
-}
+  useEffect(() => {
+    const abortController = new AbortController();
+    fetching(query, abortController);
+    return () => {
+      abortController.abort();
+    };
+  }, [query]);
+  console.log(query, moviesInfo, `error - ${error}`, `isLoading - ${isLoading}`);
+
+  return (
+    <main>
+      <SearchSection queryMethod={setNewQuery} defaultValue={query} />
+      <CardsSection>{content}</CardsSection>
+    </main>
+  );
+};
+
+export default Main;

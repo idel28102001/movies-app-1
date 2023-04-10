@@ -1,0 +1,7 @@
+@use '../../styles/common/util' as u;
+
+.error {
+  position: absolute;
+  top: u.em(20);
+  right: u.em(20);
+}

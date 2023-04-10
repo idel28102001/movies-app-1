@@ -1,9 +1,0 @@
-@use '../../styles/common/util' as u;
-
-.card-section {
-  margin-bottom: u.em(38);
-
-  @include u.breakpoint(large) {
-    margin-bottom: u.em(21);
-  }
-}

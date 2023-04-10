@@ -1,0 +1,7 @@
+@use '../../styles/common/util' as u;
+
+.card-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

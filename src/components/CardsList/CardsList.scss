@@ -3,3 +3,11 @@
 .column {
   background: #0092ff;
 }
+
+.card-list {
+  margin-bottom: u.em(38);
+
+  @include u.breakpoint(large) {
+    margin-bottom: u.em(21);
+  }
+}
