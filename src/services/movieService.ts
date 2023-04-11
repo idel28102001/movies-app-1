@@ -58,12 +58,13 @@ export class MovieService {
     return `${MovieService.baseUrl}/genre/movie/list`;
   }
 
-  static getMoviesRequest(query: string, controller?: AbortController) {
+  static getMoviesRequest(query: string, page: number, controller?: AbortController) {
     const signal = controller ? controller.signal : undefined;
     return axios
       .get<GetMoviesApi>(MovieService.moviesURL, {
         signal,
         params: {
+          page,
           api_key: MovieService.apiKey,
           query,
         },
@@ -78,9 +79,9 @@ export class MovieService {
       .then((e) => e.data);
   }
 
-  static async getMovies(query: string, controller?: AbortController): Promise<GetMoviesModification> {
+  static async getMovies(query: string, page: number, controller?: AbortController): Promise<GetMoviesModification> {
     const [movies, genres] = await Promise.all([
-      MovieService.getMoviesRequest(query, controller),
+      MovieService.getMoviesRequest(query, page, controller),
       MovieService.getGenresRequest(controller),
     ]);
     const modificationResults = movies.results.map((result) => ({

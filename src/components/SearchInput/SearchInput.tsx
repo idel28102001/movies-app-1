@@ -1,6 +1,7 @@
 import './SearchInput.scss';
 import { Component } from 'react';
 import { Input } from 'antd';
+import { debounce } from 'lodash';
 
 export type SearchQuery = (query: string) => void;
 
@@ -11,12 +12,13 @@ interface SearchInputProps {
 
 export default class SearchInput extends Component<SearchInputProps, unknown> {
   timeout = -1 as never as NodeJS.Timer;
+
+  debounceQueryInput = debounce((value: string) => {
+    this.props.queryMethod(value);
+  }, 1000);
+
   onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
-      const value = e.target.value;
-      this.props.queryMethod(value);
-    }, 200);
+    this.debounceQueryInput(e.target.value);
   };
 
   render() {
