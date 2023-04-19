@@ -3,7 +3,7 @@ import axios from 'axios';
 import { FormatDataInterface } from '../components/Card/Card';
 import FormatData from '../common/formatData';
 
-interface BaseMovieInterface {
+export interface MovieInterface {
   id: number;
   title: string;
   overview: string;
@@ -11,16 +11,7 @@ interface BaseMovieInterface {
   popularity: number;
   poster_path: string | null;
   release_date: string;
-}
-
-export interface MovieInterface extends BaseMovieInterface {
-  genres: Array<GenreInterface>;
-}
-
-export interface GetMovieInterface extends BaseMovieInterface {
   genre_ids: Array<number>;
-
-  [feature: string]: string | number | Array<number> | null;
 }
 
 export interface GenreInterface {
@@ -30,7 +21,7 @@ export interface GenreInterface {
 
 interface GetMoviesApi {
   page: number;
-  results: Array<GetMovieInterface>;
+  results: Array<MovieInterface>;
   total_pages: number;
   total_results: number;
 }
@@ -52,6 +43,12 @@ export interface CreateGuestSessionInt {
   expires_at: string;
 }
 
+export interface PostRateMovieProps {
+  guestSession: string;
+  movieId: number;
+  rate: number;
+}
+
 export class MovieService {
   private static baseUrl = 'https://api.themoviedb.org/3';
   private static apiKey = process.env.REACT_APP_API_KEY || '';
@@ -70,20 +67,28 @@ export class MovieService {
     return axios.get<CreateGuestSessionInt>(url, { params: { api_key: MovieService.apiKey } }).then((e) => e.data);
   }
 
+  static async postRateMovie({ movieId, rate, guestSession }: PostRateMovieProps): Promise<void> {
+    const api = `/movie/${movieId}/rating`;
+    const url = `${this.baseUrl}${api}`;
+    await axios.post(
+      url,
+      { value: rate },
+      {
+        params: {
+          api_key: MovieService.apiKey,
+          guest_session_id: guestSession,
+        },
+      }
+    );
+  }
+
   static async getRatedMovies(
     guestSessionId: string,
     page: number,
     controller?: AbortController
   ): Promise<GetMoviesModification> {
-    const [movies, genres] = await Promise.all([
-      MovieService.getRatedMoviesRequest(guestSessionId, page, controller),
-      MovieService.getGenresRequest(controller),
-    ]);
-    const modificationResults = movies.results.map((result) => ({
-      ...result,
-      genres: genres.genres.filter((e) => result.genre_ids.includes(e.id)),
-    }));
-    const results = modificationResults.map(FormatData.formatData);
+    const movies = await MovieService.getRatedMoviesRequest(guestSessionId, page, controller);
+    const results = movies.results.map(FormatData.formatData);
     return { ...movies, results };
   }
 
@@ -105,7 +110,7 @@ export class MovieService {
       .then((e) => e.data);
   }
 
-  static getMoviesRequest(query: string, page: number, controller?: AbortController) {
+  static getMoviesRequest(query: string, page: number, controller?: AbortController): Promise<GetMoviesApi> {
     const signal = controller ? controller.signal : undefined;
     return axios
       .get<GetMoviesApi>(MovieService.moviesURL, {
@@ -119,7 +124,7 @@ export class MovieService {
       .then((e) => e.data);
   }
 
-  static getGenresRequest(controller?: AbortController) {
+  static getGenresRequest(controller?: AbortController): Promise<GetGenresApi> {
     const signal = controller ? controller.signal : undefined;
     return axios
       .get<GetGenresApi>(MovieService.genresURL, { signal, params: { api_key: MovieService.apiKey } })
@@ -127,15 +132,8 @@ export class MovieService {
   }
 
   static async getMovies(query: string, page: number, controller?: AbortController): Promise<GetMoviesModification> {
-    const [movies, genres] = await Promise.all([
-      MovieService.getMoviesRequest(query, page, controller),
-      MovieService.getGenresRequest(controller),
-    ]);
-    const modificationResults = movies.results.map((result) => ({
-      ...result,
-      genres: genres.genres.filter((e) => result.genre_ids.includes(e.id)),
-    }));
-    const results = modificationResults.map(FormatData.formatData);
+    const movies = await MovieService.getMoviesRequest(query, page, controller);
+    const results = movies.results.map(FormatData.formatData);
     return { ...movies, results };
   }
 }

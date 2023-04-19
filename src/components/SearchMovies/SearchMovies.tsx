@@ -1,6 +1,5 @@
 import './SearchMovies.scss';
 import { useCallback, useEffect, useState } from 'react';
-import { CanceledError } from 'axios';
 
 import SearchSection from '../SearchSection';
 import CardsBlock from '../CardsBlock';
@@ -27,12 +26,7 @@ const SearchMovies = () => {
     setPage(page);
   }, []);
   const { fetching, isLoading, error } = useFetching((query: string, page: number, controller: AbortController) =>
-    MovieService.getMovies(query, page, controller)
-      .then((e) => setMoviesInfo(e))
-      .catch((e) => {
-        const isInstanceOfAbort = e instanceof CanceledError;
-        if (!isInstanceOfAbort) throw e;
-      })
+    MovieService.getMovies(query, page, controller).then((e) => setMoviesInfo(e))
   );
   const content = loadingWrapper<[GetMoviesModification | null, string, number]>(
     (moviesInfo, query, page) => {

@@ -1,6 +1,5 @@
 import './RatedMovies.scss';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { CanceledError } from 'axios';
 
 import CardsSection from '../CardsSection';
 import { AuthContext } from '../../context';
@@ -20,14 +19,8 @@ const RatedMovies = () => {
     setPage(page);
   }, []);
   const { fetching, isLoading, error } = useFetching(
-    async (guestSession: string, page: number, controller: AbortController) => {
-      MovieService.getRatedMovies(guestSession, page, controller)
-        .then((e) => setMoviesInfo(e))
-        .catch((e) => {
-          const isInstanceOfAbort = e instanceof CanceledError;
-          if (!isInstanceOfAbort) throw e;
-        });
-    }
+    (guestSession: string, page: number, controller: AbortController) =>
+      MovieService.getRatedMovies(guestSession, page, controller).then((e) => setMoviesInfo(e))
   );
   const content = loadingWrapper<[GetMoviesModification | null, number]>(
     (moviesInfo, page) => {
@@ -47,7 +40,6 @@ const RatedMovies = () => {
       abortController.abort();
     };
   }, [guestSession, page]);
-  console.log(content);
   return (
     <>
       <CardsSection>{content}</CardsSection>

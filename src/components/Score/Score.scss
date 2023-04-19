@@ -1,0 +1,34 @@
+@use '../../styles/common/util' as u;
+
+.score {
+  font-size: u.em(12);
+  font-weight: 500;
+
+  &:before {
+    border-radius: 50%;
+    border: u.em(2) solid #808080;
+    content: '';
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: u.em(40);
+    width: u.em(40);
+    position: absolute;
+  }
+
+  &--low:before {
+    border-color: #E90000;
+  }
+
+  &--medium:before {
+    border-color: #E97E00;
+  }
+
+  &--mean:before {
+    border-color: #E9D100;
+  }
+
+  &--high:before {
+    border-color: #66E900;
+  }
+}

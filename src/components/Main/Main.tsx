@@ -1,14 +1,9 @@
 import './Main.scss';
 import { useCallback, useState } from 'react';
 
-import { GetMoviesModification } from '../../services/movieService';
 import TabsPart from '../TabsPart';
 import Movies from '../Movies';
 import { ChangeTab } from '../TabsPart/TabsPart';
-
-interface MainState {
-  moviesInfo: GetMoviesModification | null;
-}
 
 const Main = () => {
   const [tab, setTab] = useState<string>('1');

@@ -1,24 +1,24 @@
 import './Genres.scss';
-import { Component } from 'react';
 import { Space, Tag } from 'antd';
+import { useContext } from 'react';
 
-export interface GenreInterface {
-  id: number;
-  name: string;
-}
+import { AuthContext } from '../../context';
 
 interface GenresProps {
-  genres: Array<GenreInterface>;
+  genres: Array<number>;
 }
 
-export default class Genres extends Component<GenresProps, unknown> {
-  render() {
-    return (
-      <Space size={[0, 4]} style={{ flexWrap: 'wrap' }}>
-        {this.props.genres.map((e) => (
-          <Tag key={e.id}>{e.name}</Tag>
-        ))}
-      </Space>
-    );
-  }
-}
+const Genres = (props: GenresProps) => {
+  const { genres } = useContext(AuthContext);
+  return (
+    <Space size={[0, 4]} style={{ flexWrap: 'wrap' }}>
+      {props.genres.map((e) => {
+        const genre = genres.find((curr) => curr.id === e);
+        if (!genre) return null;
+        return <Tag key={genre.id}>{genre.name}</Tag>;
+      })}
+    </Space>
+  );
+};
+
+export default Genres;

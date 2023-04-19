@@ -1,10 +1,10 @@
 import { format } from 'date-fns';
 
-import { MovieInterface } from '../services/movieService';
 import { InfoInterface } from '../components/Info/Info';
 import { CardDescrInterface } from '../components/CardDescr/CardDescr';
 import { CardImageInterface } from '../components/CardImage/CardImage';
 import { FormatDataInterface } from '../components/Card/Card';
+import { MovieInterface } from '../services/movieService';
 
 export default class FormatData {
   static mockUrl = 'https://via.placeholder.com/500x500';
@@ -23,7 +23,7 @@ export default class FormatData {
   }
 
   static getCardDescr(data: MovieInterface): CardDescrInterface {
-    return { score: FormatData.getScore(data.popularity), rate: data.vote_average, description: data.overview };
+    return { score: FormatData.getScore(data.vote_average), description: data.overview };
   }
 
   static getCardAltText(title: string) {
@@ -48,6 +48,6 @@ export default class FormatData {
 
   static getInfoItem(data: MovieInterface): InfoInterface {
     const releaseDate = FormatData.getReleaseDate(data.release_date);
-    return { heading: data.title, genres: data.genres, releaseDate };
+    return { heading: data.title, releaseDate, genre_ids: data.genre_ids };
   }
 }

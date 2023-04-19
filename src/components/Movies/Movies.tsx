@@ -1,6 +1,6 @@
 import './Movies.scss';
-import SearchMovies from '../SearchMovies';
 import RatedMovies from '../RatedMovies';
+import SearchMovies from '../SearchMovies';
 
 interface MoviesProps {
   tab: string;
