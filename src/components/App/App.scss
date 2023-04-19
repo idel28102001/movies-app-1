@@ -1,0 +1,48 @@
+@use "~inter-ui/default" with (
+  $inter-font-display: swap,
+  $inter-font-path: '~inter-ui/Inter (web)'
+);
+@use "~inter-ui/variable" with (
+  $inter-font-display: swap,
+  $inter-font-path: '~inter-ui/Inter (web)'
+);
+@use '../../styles/common/util' as u;
+
+@include default.all;
+@include variable.all;
+
+html {
+  font-family: "Inter", "system-ui";
+}
+
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: "Inter var", "system-ui";
+  }
+}
+
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  background: #E5E5E5;
+  margin: 0;
+  min-height: 100vh;
+}
+
+.app {
+  position: relative;
+  padding-block: u.em(19) u.em(21);
+  min-height: 100vh;
+  background: #FFF;
+}
+
+@include u.make-container(default);
+@include u.make-container(xxlarge);
+@include u.make-container(xlarge);
+@include u.make-container(large);
+@include u.make-container(medium);
+@include u.make-container(xsmall);
+@include u.make-container(small);

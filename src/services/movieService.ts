@@ -46,6 +46,12 @@ export interface GetMoviesModification {
   total_results: number;
 }
 
+export interface CreateGuestSessionInt {
+  success: boolean;
+  guest_session_id: string;
+  expires_at: string;
+}
+
 export class MovieService {
   private static baseUrl = 'https://api.themoviedb.org/3';
   private static apiKey = process.env.REACT_APP_API_KEY || '';
@@ -56,6 +62,47 @@ export class MovieService {
 
   static get genresURL() {
     return `${MovieService.baseUrl}/genre/movie/list`;
+  }
+
+  static createGuestSession(): Promise<CreateGuestSessionInt> {
+    const api = '/authentication/guest_session/new';
+    const url = `${this.baseUrl}${api}`;
+    return axios.get<CreateGuestSessionInt>(url, { params: { api_key: MovieService.apiKey } }).then((e) => e.data);
+  }
+
+  static async getRatedMovies(
+    guestSessionId: string,
+    page: number,
+    controller?: AbortController
+  ): Promise<GetMoviesModification> {
+    const [movies, genres] = await Promise.all([
+      MovieService.getRatedMoviesRequest(guestSessionId, page, controller),
+      MovieService.getGenresRequest(controller),
+    ]);
+    const modificationResults = movies.results.map((result) => ({
+      ...result,
+      genres: genres.genres.filter((e) => result.genre_ids.includes(e.id)),
+    }));
+    const results = modificationResults.map(FormatData.formatData);
+    return { ...movies, results };
+  }
+
+  static getRatedMoviesUrl(guestSessionId: string): string {
+    return `${this.baseUrl}/guest_session/${guestSessionId}/rated/movies`;
+  }
+
+  static getRatedMoviesRequest(guestSessionId: string, page: number, controller?: AbortController) {
+    const signal = controller ? controller.signal : undefined;
+    const url = MovieService.getRatedMoviesUrl(guestSessionId);
+    return axios
+      .get<GetMoviesApi>(url, {
+        signal,
+        params: {
+          page,
+          api_key: MovieService.apiKey,
+        },
+      })
+      .then((e) => e.data);
   }
 
   static getMoviesRequest(query: string, page: number, controller?: AbortController) {

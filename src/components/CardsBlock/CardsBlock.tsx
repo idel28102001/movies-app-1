@@ -8,15 +8,16 @@ import { PaginatePage } from '../Pagination/Pagination';
 
 interface CardSectionProps {
   moviesInfo: GetMoviesModification;
-  query: string;
+  query?: string;
   paginatePage: PaginatePage;
   currPage: number;
+  type: string;
 }
 
 export default class CardsBlock extends Component<CardSectionProps, unknown> {
   render() {
     const notFound = this.props.moviesInfo.total_results === 0;
-    if (notFound) return <CardsNotFound query={this.props.query} />;
+    if (notFound) return <CardsNotFound query={this.props.query} type={this.props.type} />;
     return (
       <CardsFound
         currPage={this.props.currPage}

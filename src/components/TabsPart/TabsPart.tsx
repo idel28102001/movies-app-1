@@ -3,7 +3,13 @@ import { Component } from 'react';
 import { Tabs } from 'antd';
 import { TabsProps } from 'antd/lib';
 
-export default class TabsPart extends Component<unknown, unknown> {
+export type ChangeTab = (tabKey: string) => void;
+
+interface TabsPartProps {
+  changeTab: ChangeTab;
+}
+
+export default class TabsPart extends Component<TabsPartProps, unknown> {
   render() {
     const items: TabsProps['items'] = [
       {
@@ -17,7 +23,7 @@ export default class TabsPart extends Component<unknown, unknown> {
     ];
     return (
       <div className="search-section__tabs-part tabs-part">
-        <Tabs defaultActiveKey="1" items={items} />
+        <Tabs defaultActiveKey={items[0].key} items={items} onChange={(e) => this.props.changeTab(e)} />
       </div>
     );
   }
