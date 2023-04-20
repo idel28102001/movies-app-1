@@ -15,7 +15,7 @@ interface CardsFoundProps {
 export default class CardsFound extends Component<CardsFoundProps, unknown> {
   render() {
     return (
-      <>
+      <div className="cards-found">
         <CardsList items={this.props.moviesInfo.results} />
         <Pagination
           currPage={this.props.currPage}
@@ -23,7 +23,7 @@ export default class CardsFound extends Component<CardsFoundProps, unknown> {
           total={this.props.moviesInfo.total_results}
           perPage={this.props.moviesInfo.results.length}
         />
-      </>
+      </div>
     );
   }
 }

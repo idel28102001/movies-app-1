@@ -1,5 +1,5 @@
 import './Genres.scss';
-import { Space, Tag } from 'antd';
+import { Tag } from 'antd';
 import { useContext } from 'react';
 
 import { AuthContext } from '../../context';
@@ -11,13 +11,17 @@ interface GenresProps {
 const Genres = (props: GenresProps) => {
   const { genres } = useContext(AuthContext);
   return (
-    <Space size={[0, 4]} style={{ flexWrap: 'wrap' }}>
+    <ul className="genres__list">
       {props.genres.map((e) => {
         const genre = genres.find((curr) => curr.id === e);
         if (!genre) return null;
-        return <Tag key={genre.id}>{genre.name}</Tag>;
+        return (
+          <li key={genre.id}>
+            <Tag>{genre.name}</Tag>
+          </li>
+        );
       })}
-    </Space>
+    </ul>
   );
 };
 
